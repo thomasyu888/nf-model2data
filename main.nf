@@ -72,17 +72,38 @@ process validate {
 }
 
 process score {
-    echo true
 
     input:
     val valid from validated
     file pred from prediction
+
+    output:
+    file 'score.json' into scores
 
     when:
     valid == 'done'
 
     script:
     """
-    echo 3
+    #!/usr/bin/python
+    import json
+
+    with open("$pred", "r") as pred_f:
+        text = pred_f.read()
+
+    # Scoring function here
+
+    prediction_file_status = "SCORED"
+
+    result = {'primary_metric': 'auc',
+              'primary_metric_value': 0.8,
+              'secondary_metric': 'aupr',
+              'secondary_metric_value': 0.2,
+              'submission_status': prediction_file_status}
+
+    with open("score.json", 'w') as score_o:
+        score_o.write(json.dumps(result))
     """
 }
+
+scores.subscribe { println "Received: " + it.text }
