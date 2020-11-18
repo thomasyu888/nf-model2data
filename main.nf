@@ -1,9 +1,6 @@
 
-// params.command
-// params.synid
+// params.submissionid - 9695287
 // params.synapseconfig
-// params.inputfile
-// params.parentid
 
 def helpMessage() {
     log.info """
@@ -21,16 +18,19 @@ if (params.help) {
 process get_submission {
     input:
     file synapseconfig from file(params.synapseconfig)
+    val subid from params.submissionid
 
     output:
     file 'submission.json' into submission
 
     script:
     """
-    challengeutils -c $synapseconfig download-submission 9695287 --output submission.json
+    challengeutils -c $synapseconfig download-submission $subid --output submission.json
     """
 }
 
+// Nextflow stopped supporting executable docker containers
+// So it is better to explicitly call `docker run` here
 process run_docker {
     echo true
 
