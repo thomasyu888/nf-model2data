@@ -19,6 +19,7 @@ if (params.help) {
 }
 
 process get_submission {
+
     input:
     file synapseconfig from file(params.synapseconfig)
     val subid from params.submissionid
@@ -35,7 +36,6 @@ process get_submission {
 // Nextflow stopped supporting executable docker containers
 // So it is better to explicitly call `docker run` here
 process run_docker {
-    echo true
 
     input:
     file sub_info from submission
