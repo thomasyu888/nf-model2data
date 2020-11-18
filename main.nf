@@ -6,6 +6,9 @@ def helpMessage() {
     log.info """
     Usage:
     nextflow run Sage-Bionetworks/synapse-nextflow --help
+    Mandatory arguments:
+      --submissionid           Synapse submission Id
+      --synapseconfig          Synapse config file
     """.stripIndent()
 }
 
