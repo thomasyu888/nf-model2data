@@ -1,6 +1,7 @@
 
 // params.submissionid - 9695287
 // params.synapseconfig
+// params.data - '/Users/tyu/sage/nf-model2data'
 
 def helpMessage() {
     log.info """
@@ -39,6 +40,7 @@ process run_docker {
 
     input:
     file sub_info from submission
+    path input from params.data
 
     output:
     file 'predictions.csv' into prediction
@@ -47,7 +49,7 @@ process run_docker {
     """
     repo=`cat $sub_info | jq -r .docker_repository`
     digest=`cat $sub_info | jq -r .docker_digest`
-    docker run -v /Users/tyu/sage/nf-model2data:/input:ro -v \$PWD:/output:rw \$repo@\$digest
+    docker run -v $input:/input:ro -v \$PWD:/output:rw \$repo@\$digest
     """
 }
 
