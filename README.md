@@ -9,5 +9,5 @@ nextflow run Sage-Bionetworks-Challenges/nf-model2data --help
 To run this workflow:
 
 ```
-nextflow run Sage-Bionetworks-Challenges/nf-model2data --synapseconfig ~/.synapseConfig --submissionid 9695287
+nextflow run Sage-Bionetworks-Challenges/nf-model2data
 ```
