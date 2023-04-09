@@ -1,23 +1,30 @@
 
 // Find your tower s3 bucket and upload your input files into it
 // The tower space is PHI safe
+nextflow.enable.dsl = 2
 
-// How to log into private docker registry on nextflow tower
-files = Channel.fromPath("s3://genie-bpc-project-tower-bucket/**", type: 'any')
+params.input
 
 process run_docker {
-    echo true
+    debug true
     secret 'SYNAPSE_AUTH_TOKEN'
     
     input:
     path files
 
     output:
-    file 'predictions.csv' into prediction
+    path 'predictions.csv'
 
     script:
     """
     echo \$SYNAPSE_AUTH_TOKEN | docker login docker.synapse.org --username foo --password-stdin
-    docker run -v $input:/input:ro -v \$PWD:/output:rw docker.synapse.org/syn4990358/challengeworkflowexample:valid
+    docker run -v $files:/input:ro -v \$PWD:/output:rw docker.synapse.org/syn4990358/challengeworkflowexample:valid
     """
+}
+
+workflow {
+    // "s3://genie-bpc-project-tower-bucket/**"
+    // How to log into private docker registry on nextflow tower
+    input_files = Channel.fromPath("$params.input", type: 'dir')
+    run_docker(input_files)
 }
