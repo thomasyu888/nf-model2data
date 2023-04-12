@@ -11,6 +11,8 @@ process run_docker {
     debug true
     secret 'SYNAPSE_AUTH_TOKEN'
 
+    container "docker:latest"
+
     input:
     val input_dir
     val username
@@ -21,6 +23,8 @@ process run_docker {
 
     script:
     """
+    #! /bin/sh
+
     echo \$SYNAPSE_AUTH_TOKEN | docker login docker.synapse.org --username $username --password-stdin
     docker run -v $input_dir:/input:ro -v  \$PWD:/output:rw $container
     """
