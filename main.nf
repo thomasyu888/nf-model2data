@@ -11,7 +11,7 @@ process run_docker {
     debug true
     secret 'SYNAPSE_AUTH_TOKEN'
 
-    container "docker:latest"
+    container "ghcr.io/sage-bionetworks-workflows/nf-model2data/dind_image:1.0"
 
     input:
     val input_dir
@@ -23,8 +23,6 @@ process run_docker {
 
     script:
     """
-    #! /bin/sh
-
     echo \$SYNAPSE_AUTH_TOKEN | docker login docker.synapse.org --username $username --password-stdin
     docker run -v $input_dir:/input:ro -v  \$PWD:/output:rw $container
     """
