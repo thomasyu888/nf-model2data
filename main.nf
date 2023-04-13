@@ -3,9 +3,8 @@
 // The tower space is PHI safe
 nextflow.enable.dsl = 2
 
-params.input_dir = "/workspaces/nf-model2data/example_model/data"
+params.input_dir = "${projectDir}/example_model/data"
 params.container = "docker.synapse.org/syn51317219/example_model:v1"
-params.username = "bwmac"
 
 process run_docker {
     debug true
@@ -15,7 +14,6 @@ process run_docker {
 
     input:
     val input_dir
-    val username
     val container
 
     output:
@@ -23,7 +21,7 @@ process run_docker {
 
     script:
     """
-    echo \$SYNAPSE_AUTH_TOKEN | docker login docker.synapse.org --username $username --password-stdin
+    echo \$SYNAPSE_AUTH_TOKEN | docker login docker.synapse.org --username foo --password-stdin
     docker run -v $input_dir:/input:ro -v  \$PWD:/output:rw $container
     """
 }
@@ -35,5 +33,5 @@ workflow {
     // input_files = Channel.fromPath("$params.input", type: 'dir')
     // input_files = params.input
     // docker_images = Channel.fromList(input_docker_list)
-    run_docker(params.input_dir, params.username, params.container)
+    run_docker(params.input_dir, params.container)
 }
