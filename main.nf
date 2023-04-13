@@ -14,6 +14,7 @@ process run_docker {
     cpus "${cpus}"
     memory "${memory}"
     container "ghcr.io/sage-bionetworks-workflows/nf-model2data/dind_image:1.0"
+    
 
     input:
     val input_dir
