@@ -3,7 +3,7 @@
 // The tower space is PHI safe
 nextflow.enable.dsl = 2
 
-params.input_dir = "${projectDir}/example_model/data"
+params.input_dir = "${projectDir}/input"
 params.container = "docker.synapse.org/syn51317219/example_model:v1"
 params.cpus = "4"
 params.memory = "16"
@@ -17,7 +17,7 @@ process run_docker {
     
 
     input:
-    val input_dir
+    val input
     val container
     val cpus
     val memory
@@ -28,7 +28,7 @@ process run_docker {
     script:
     """
     echo \$SYNAPSE_AUTH_TOKEN | docker login docker.synapse.org --username foo --password-stdin
-    docker run -v $input_dir:/input:ro -v  \$PWD:/output:rw $container
+    docker run -v $input:/input:ro -v  \$PWD:/output:rw $container
     """
 }
 
