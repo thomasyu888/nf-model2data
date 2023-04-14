@@ -13,8 +13,6 @@ process run_docker {
     secret 'SYNAPSE_AUTH_TOKEN'
     cpus "${cpus}"
     memory "${memory}"
-    container "ghcr.io/sage-bionetworks-workflows/nf-model2data/dind_image:1.0"
-    
 
     input:
     val input
