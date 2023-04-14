@@ -4,7 +4,7 @@
 nextflow.enable.dsl = 2
 
 params.input_dir = "${projectDir}/input"
-params.container = "docker.synapse.org/syn51317219/example_model:v1"
+params.container = "ubuntu"
 params.cpus = "4"
 params.memory = "16"
 
@@ -28,7 +28,7 @@ process run_docker {
     script:
     """
     echo \$SYNAPSE_AUTH_TOKEN | docker login docker.synapse.org --username foo --password-stdin
-    docker run -v $input:/input:ro -v  \$PWD:/output:rw $container
+    docker run -v $input:/input:ro -v  \$PWD:/output:rw $container ls /input
     """
 }
 
